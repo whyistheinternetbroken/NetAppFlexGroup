@@ -16,7 +16,7 @@ set -e
 #
 # Run this script against a FlexVol volume for comparison.
 
-declare -a CLIENTS=(client1,client2,client3)
+declare -a CLIENTS=(client1 client2 client3)
 # Change the values in {brackets} to desired values. Remove brackets.
 
 TARGET={/path}

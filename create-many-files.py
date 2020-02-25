@@ -46,21 +46,9 @@ def sub_dir(topdir):
     for subdir in range(0,1000):
         os.mkdir(topdir + '/subdir_' + str(subdir))
         os.chdir(topdir + '/subdir_' + str(subdir))
-        f1 = open('file1', 'w')
-        f2 = open('file2', 'w')
-        f3 = open('file3', 'w')
-        f4 = open('file4', 'w')
-        f5 = open('file5', 'w')
-        f1.write(topdir + '\n')
-        f2.write(topdir + '/subdir_' + str(subdir) + '\n')
-        f3.write(str(datetime.datetime.now()) + '\n')
-        f4.write(platform.uname()[0] + '\n')
-        f5.write(socket.gethostname() + '\n')
-        f1.close()
-        f2.close()
-        f3.close()
-        f4.close()
-        f5.close()
- 
+        for item in range(0,5000000):
+                with open("shining{}.txt".format(item), "w") as f:
+                        f.write("All work and no play make Jack a dull boy")
+                        f.close()
  
 multiproc(command_line())

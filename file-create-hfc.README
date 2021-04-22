@@ -1,0 +1,34 @@
+This script will create x directories and y files in parallel, which allows you to test performance and capabilities of storage systems.
+
+The file creations are performed using dd and leverage /dev/urandom to create data that doesn't get impacted by storage efficiencies.
+
+The idea is that the path specified will be a path that points to a storage system; that can be over NAS or SAN. If you're using NetApp ONTAP storage, 
+you can leverage the snapshot functionality to create baseline snapshots of your environment and then restore the snapshot when you've run your tests.
+
+There are a series of variables you can defined to control the behavior of the script.
+
+  * "filecount" controls the number of files per folder created
+  
+  * "dircount" controls the number of directories created and directly impacts the total number of files and the number of parallel processes. 
+     For instance, if you specify 8 directories, you'll get 8 dd processes in parallel.
+  
+  * "blocksize" controls the size of the writes coming from dd. Specify these as user-friendly values (such as 1MB or 4KB); these values are used in the file names.
+  * "n" controls the number of blocks written by dd and impacts the total file size. If you specify 1MB blocks and write 10 of them, you have a 10MB file.
+  
+  * "outputfile" controls the name of the dd file. You can change this, but there isn't a need to in most cases.
+  
+  * "inputfile" controls where dd pulls the data to write from. I chose /dev/urandom to create random data, which gives a more accurate file size 
+     when storage efficiencies are in play. /dev/null writes 0s and will often create much smaller capacity footprints.
+
+This script can run with Python 2.6 or later and uses the following syntax:
+
+# python file-create-hfc.py /path/that/exists
+
+====================
+FAILURE SCENARIOS
+=====================
+- If you specify a path that doesn't exist, the command will fail.
+- If you don't specify a path in the command, it will fail.
+- If the files/folders to be created already exist, the command will fail.
+- If you use invalid variable entries, the command will fail.
+- If you don't have the right Python version installed, the command will fail.

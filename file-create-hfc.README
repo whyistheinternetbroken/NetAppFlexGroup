@@ -20,9 +20,9 @@ There are a series of variables you can defined to control the behavior of the s
   * "inputfile" controls where dd pulls the data to write from. I chose /dev/urandom to create random data, which gives a more accurate file size 
      when storage efficiencies are in play. /dev/null writes 0s and will often create much smaller capacity footprints.
 
-This script can run with Python 2.6 or later and uses the following syntax:
+This script can run with Python 3 or later and uses the following syntax:
 
-# python file-create-hfc.py /path/that/exists
+# python3 file-create-hfc.py /path/that/exists
 
 ====================
 FAILURE SCENARIOS

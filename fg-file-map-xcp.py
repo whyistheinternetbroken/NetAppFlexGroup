@@ -1,5 +1,5 @@
 ##
-# fgid.py
+# fg-file-map-xcp.py
 #
 # Copyright (c) 2021 NetApp Inc. - All Rights Reserved
 # This sample code is provided AS IS, with no support or warranties of any kind, including but not limited to warranties of merchantability or fitness of any kind, expressed or implied.

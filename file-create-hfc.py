@@ -69,6 +69,11 @@ def files(topdir):
  os.mkdir(topdir)
  os.chdir(topdir)
  for item in range(0,filecount):
+    # To use a f.write, uncomment out the next three lines and comment out subprocess.run; this creates more NFS ops
+    #  with open("moarfiles{}.txt".format(item), "w") as f:
+    #   num_chars = 1024 * 1024
+    #   f.write('All work no play' * num_chars)
+    #To use dd, uncomment the next line and comment out the three lines above; this provides more throughput
    subprocess.run(["dd", "if=" + inputfile, "of=" + topdir + outputfile + blocksize + "_" + str(item), "bs=" + blocksize, "count=" + n, "status=none"])
 
 multiproc(command_line())

@@ -73,7 +73,7 @@ def files(topdir):
     #  with open("moarfiles{}.txt".format(item), "w") as f:
     #   num_chars = 1024 * 1024
     #   f.write('All work no play' * num_chars)
-    #To use dd, uncomment the next line and comment out the three lines above; this provides more throughput
+    #To use dd, uncomment the next line and comment out the three lines above; this provides more throughput - 100% write
    subprocess.run(["dd", "if=" + inputfile, "of=" + topdir + outputfile + blocksize + "_" + str(item), "bs=" + blocksize, "count=" + n, "status=none"])
 
 multiproc(command_line())

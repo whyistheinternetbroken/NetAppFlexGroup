@@ -3,28 +3,27 @@ from multiprocessing import Process
 import os, datetime,platform, time,argparse, socket, subprocess
 
 # How many files per folder?
-filecount = 8
+filecount = 500
 
 # How many directories? This will also be the number of simultaneous processes that run.
-dircount = 11
+# Specifying too many directories can result in client errors such as OSError: [Errno 24] Too many open files
+dircount = 1000
 
 # Blocksize for dd (use friendly values like 1MB, 4KB, etc... this impacts file names)
-blocksize = "1MB"
-
+blocksize = "512"
 # Number of blocks
-n = "16"
-
-# dd output file name
+n = "8"
+# Output file name
 outputfile = "/dd-file"
-
-# Inpput file to stream from - /dev/urandom (random data written for "real" space usage) or /dev/null or an actual file
+# /dev/urandom (random data written for "real" space usage) or /dev/null
 inputfile = "/dev/urandom"
 
 print()
 print("=======================================================")
-print("Directories to be created: " + str(dircount))
-print("Files to be created: " + str(dircount*filecount) + " (" + str(filecount) + " per directory)")
-print("Total files and folders: " + str(dircount*filecount+dircount))
+print("Directories per client to be created: " + str(dircount))
+print("Files per client to be created: " + str(dircount*filecount) + " (" + str(filecount) + " per directory)")
+print("Total files and folders per client: " + str(dircount*filecount+dircount))
+print("Client: " + socket.gethostname())
 print("=======================================================")
 print()
 print()
@@ -54,14 +53,18 @@ def multiproc(topdir):
     print()
     print("===================================================")
     print('Starting overall work: %s' % (datetime.datetime.now()))
+    print("===================================================")
+    print()
     for element in process_list:
         element.start()
 
     for element in process_list:
         element.join()
     print()
+    print("===================================================")
     print('End overall work: %s' % (datetime.datetime.now()))
     print('Total time: %s' % (time.time() - start))
+    print("Client: " + socket.gethostname())
     print("===================================================")
     print()
 
@@ -69,11 +72,11 @@ def files(topdir):
  os.mkdir(topdir)
  os.chdir(topdir)
  for item in range(0,filecount):
-    # To use a f.write, uncomment out the next three lines and comment out subprocess.run; this creates more NFS ops. Be sure to match the correct indents.
-    #  with open("moarfiles{}.txt".format(item), "w") as f:
-    #   num_chars = 1024 * 1024
-    #   f.write('All work no play' * num_chars)
-    #To use dd, uncomment the next line and comment out the three lines above; this provides more throughput - 100% write
-   subprocess.run(["dd", "if=" + inputfile, "of=" + topdir + outputfile + blocksize + "_" + str(item), "bs=" + blocksize, "count=" + n, "status=none"])
+##Higher ops, more getattrs
+  with open("moarfiles{}.txt".format(item), "w") as f:
+   num_chars = 256
+   f.write('All work no play' * num_chars)
+## Fewer getattrs, dd operation
+#   subprocess.run(["dd", "if=" + inputfile, "of=" + topdir + outputfile + blocksize + "_" + str(item), "bs=" + blocksize, "count=" + n, "status=none"])
 
 multiproc(command_line())
